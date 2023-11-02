@@ -64,7 +64,7 @@ void loop() {
     while (central.connected()) {
       digitalWrite(ledPin, HIGH);   
       updateValue();
-      delay(500);
+      delay(100);
     }
 
     // when the central disconnects, print it out:
