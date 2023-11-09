@@ -28,8 +28,8 @@ for k in range(100):
             countR -= 1
     if countL > 0 and countR > 0:
         action = "Forward"
-    elif countL < 0 and countR < 0:
-        action = "Backward"
+    # elif countL < 0 and countR < 0:
+    #     action = "Backward"
     elif countL > 0 and countR < 0:
         action = "Turn Left"
     elif countL < 0 and countR > 0:
