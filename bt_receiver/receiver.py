@@ -10,7 +10,9 @@ right_char_uuid = '19B10000-E8F2-537E-4F6C-D104768A1215'
 async def main():
     my_device = None
     devices: list[BLEDevice] = await BleakScanner.discover()
+    print(devices)
     for d in devices:
+        print(d.details)
         if d.details["props"].get("Name") == 'EMG':
             my_device = d
             print('Found it')
