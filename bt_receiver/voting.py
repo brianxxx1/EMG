@@ -2,13 +2,15 @@
 # diff = max - min
 # perc = (element - min) / diff    loop    25次投票
 import numpy as np
+from car_controller import car
+def fill(LeftBuffer, LeftInput, RightBuffer, RightInput):
+    LeftBuffer.append(LeftInput)
+    RightBuffer.append(RightInput)
 
-MaxL, MinL, MaxR, MinR = float('-inf'), float('inf'), float('-inf'), float('inf')
-threshold = 0.3
+def vote(Left, Right):
+    MaxL, MinL, MaxR, MinR = float('-inf'), float('inf'), float('-inf'), float('inf')
+    threshold = 0.3
 
-for k in range(100):
-    Left = np.random.randint(0, 2000, 25)  
-    Right = np.random.randint(0, 2000, 25) 
     MaxL = max(np.max(Left), MaxL)
     MinL = min(np.min(Left), MinL)
     MaxR = max(np.max(Right), MaxR)
@@ -27,12 +29,17 @@ for k in range(100):
         elif (Right[i] - MinR) / diffR < threshold:
             countR -= 1
     if countL > 0 and countR > 0:
-        action = "Forward"
+        action = 'Forward'
+        car.Motor_Forward()
     elif countL > 0 and countR < 0:
-        action = "Turn Left"
+        action = 'Left'
+        car.Motor_TurnLeft()
     elif countL < 0 and countR > 0:
-        action = "Turn Right"
+        action = 'Right'
+        car.Motor_TurnRight()
     else:
-        action = "Stop"
+        action = 'Stop'
+        car.Motor_Stop()
+
 
     print(action)
