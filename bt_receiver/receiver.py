@@ -2,12 +2,21 @@ import asyncio
 from bleak import BleakScanner, BleakClient, BLEDevice
 import voting
 
-service = '19B10000-E8F2-537E-4F6C-D104768A1214'
-left_char_uuid = '19B10000-E8F2-537E-4F6C-D104768A1214'
-right_char_uuid = '19B10000-E8F2-537E-4F6C-D104768A1215'
+# TODO: Add comments for below
+service = "19B10000-E8F2-537E-4F6C-D104768A1214"
+left_char_uuid = "19B10000-E8F2-537E-4F6C-D104768A1214"
+right_char_uuid = "19B10000-E8F2-537E-4F6C-D104768A1215"
 
 
 
+
+# TODO: We may want a new main which is not async and waiting for readings.
+# If we are using this async main as our main control and we lose the bluetooth connection,
+# the refresh car action will also wait for next reading. In other words, the car will not stop if
+# we lose the bluetooth connection.
+# Design a new main, call the receiver to get the readings and fill them into the voting_agent.
+# A stand along damon process to refresh car_action. If we lose bluetooth connection, we set
+# voting result of voting_agent to stop, and call refresh_car_action to stop the car.
 async def main():
     my_device = None
     devices: list[BLEDevice] = await BleakScanner.discover()
