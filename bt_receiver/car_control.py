@@ -86,15 +86,20 @@ class CarControllingAgent:
         refresh car action based on the voting result, and send signal to control the car
         """
         if self.voting_result == MotorActions.FORWARD:
-            car.Motor_Forward()
+            print("forward")
+            #car.Motor_Forward()
         elif self.voting_result == MotorActions.TURNLEFT:
-            car.Motor_TurnLeft()
+            print("left")
+            # car.Motor_TurnLeft()
         elif self.voting_result == MotorActions.TURNRIGHT:
-            car.Motor_TurnRight()
+            print("right")
+            # car.Motor_TurnRight()
         else:
-            car.Motor_Stop()
+            print("back")
+            # car.Motor_Stop()
         print(f"Voting result is {self.voting_result}")
 
     def stop_car(self):
         self.voting_result = MotorActions.STOP
-        car.Motor_Stop()
+        print("Stop")
+        # car.Motor_Stop()
