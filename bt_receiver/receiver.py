@@ -36,9 +36,11 @@ async def main():
     async with BleakClient(my_device) as client:
         while True:
             left_reading = await client.read_gatt_char(left_char_uuid)
+            left_reading = int.from_bytes(left_reading, byteorder='big')
             print(f"Left Reading is {int.from_bytes(left_reading, byteorder='big')}")
             right_reading = await client.read_gatt_char(right_char_uuid)
-            print(f"Right Reading is {int.from_bytes(right_reading, byteorder='big')}")
+            right_reading = int.from_bytes(right_reading, byteorder='big')
+            print(f"Right Reading is {right_reading}")
 
             # voting and taking car action based on voting result
             car_controlling_agent.fill_readings(

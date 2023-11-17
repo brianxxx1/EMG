@@ -5,7 +5,7 @@ that decides and control the car action.
 
 from enum import Enum
 
-from car_controller import car
+import car
 
 
 class MotorActions(Enum):
