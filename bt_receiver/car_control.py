@@ -2,13 +2,13 @@
 This is the car control system. CarControllingAgent has a built-in voting system
 that decides and control the car action.
 """
-import threading
-import time
+# import threading
+# import time
 
 
 from enum import Enum
 
-import car
+# import car
 
 
 class MotorActions(Enum):
@@ -90,19 +90,19 @@ class CarControllingAgent:
         """
         if self.voting_result == MotorActions.FORWARD:
             print("forward")
-            car.Motor_Forward()
+            # car.Motor_Forward()
         elif self.voting_result == MotorActions.TURNLEFT:
             print("left")
-            car.Motor_TurnLeft()
+            # car.Motor_TurnLeft()
         elif self.voting_result == MotorActions.TURNRIGHT:
             print("right")
-            car.Motor_TurnRight()
+            # car.Motor_TurnRight()
         else:
             print("back")
-            car.Motor_Stop()
+            # car.Motor_Stop()
         print(f"Voting result is {self.voting_result}")
 
     def stop_car(self):
         self.voting_result = MotorActions.STOP
         print("Stop")
-        car.Motor_Stop()
+        # car.Motor_Stop()
