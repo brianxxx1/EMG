@@ -2,13 +2,13 @@ import asyncio
 
 from bleak import BleakClient, BleakScanner, BLEDevice
 from car_control import CarControllingAgent
+from refresh_car import init_daemon
 
 # TODO: Add comments for below
 service = "19B10000-E8F2-537E-4F6C-D104768A1214"
 left_char_uuid = "19B10000-E8F2-537E-4F6C-D104768A1214"
 right_char_uuid = "19B10000-E8F2-537E-4F6C-D104768A1215"
-
-
+signal_start = False
 # Arduino is sending the EMG readings every 40 ms.
 # So, 25 groups of readings per second are received in here.
 # TODO: We may need to tune the activate threshold to have a good muscle activation detection.
@@ -22,6 +22,9 @@ car_controlling_agent = CarControllingAgent(voting_num=25, activate_threshold=0.
 # Design a new main, call the receiver to get the readings and fill them into the voting_agent.
 # A stand along damon process to refresh car_action. If we lose bluetooth connection, we set
 # voting result of voting_agent to stop, and call refresh_car_action to stop the car.
+
+init_daemon()
+
 async def main():
     my_device = None
     devices: list[BLEDevice] = await BleakScanner.discover()
@@ -34,6 +37,7 @@ async def main():
             break
 
     async with BleakClient(my_device) as client:
+        
         while True:
             left_reading = await client.read_gatt_char(left_char_uuid)
             left_reading = int.from_bytes(left_reading, byteorder='big')
