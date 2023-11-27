@@ -64,22 +64,24 @@ time.sleep(1)
 signal_start.set()
 
 async def main():
-    my_device = None
-    devices: list[BLEDevice] = await BleakScanner.discover()
-    print(devices)
-    for d in devices:
-        print(d.details)
-        if d.details["props"].get("Name") == "EMG":
-            my_device = d
-            print("Found it")
-            break
+    my_device = "DC:54:75:C5:50:4D"
+    # devices: list[BLEDevice] = await BleakScanner.discover()
+    # print(devices)
+    
+    # for d in devices:
+    #     print(d)
+    #     # print(d.details)
+    #     if d.details["props"].get("Name") == "EMG":
+    #         my_device = d
+    #         print("Found it")
+    #         break
 
     async with BleakClient(my_device) as client:
         
         while True:
             left_reading = await client.read_gatt_char(left_char_uuid)
             left_reading = int.from_bytes(left_reading, byteorder='big')
-            print(f"Left Reading is {int.from_bytes(left_reading, byteorder='big')}")
+            print(f"Left Reading is {left_reading}")
             right_reading = await client.read_gatt_char(right_char_uuid)
             right_reading = int.from_bytes(right_reading, byteorder='big')
             print(f"Right Reading is {right_reading}")
