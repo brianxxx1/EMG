@@ -93,18 +93,19 @@ class CarControllingAgent:
         if self.voting_buffer_length < self.voting_num:
             return
 
-        normalized_left_buffer = self.normalize_data(self.left_buffer)
-        normalized_right_buffer = self.normalize_data(self.right_buffer)
+        # normalized_left_buffer = self.normalize_data(self.left_buffer)
+        # normalized_right_buffer = self.normalize_data(self.right_buffer)
+
         # print(normalized_left_buffer, datetime.now())
         # print(normalized_right_buffer),datetime.now() 
         left_count, right_count = 0, 0
         for i in range(self.voting_num):
-            if normalized_left_buffer[i] >= self.activate_threshold_left:
+            if self.left_buffer[i] >= self.activate_threshold_left:
                 left_count += 1
             else:
                 left_count -= 1
 
-            if normalized_right_buffer[i] >= self.activate_threshold_right:
+            if self.right_buffer[i] >= self.activate_threshold_right:
                 right_count += 1
             else:
                 right_count -= 1
@@ -140,20 +141,16 @@ class CarControllingAgent:
         if self.voting_result == MotorActions.FORWARD:
             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             # car.Motor_Forward()
-            pass
         elif self.voting_result == MotorActions.TURNLEFT:
             print("<<<<<<<<<<<<<<-------------")
             # car.Motor_TurnLeft()
-            pass
         elif self.voting_result == MotorActions.TURNRIGHT:
             print("--------------->>>>>>>>>>>>")
             # car.Motor_TurnRight()
-            pass
             
         else:
             print("stop")
             # car.Motor_Stop()
-            pass
             
         # print(f"Voting result is {self.voting_result}")
 
