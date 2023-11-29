@@ -113,6 +113,7 @@ class CarControllingAgent:
         self.decide_action(left_count, right_count)
         # print(self.left_buffer)
         # print(self.right_buffer)
+        self.refresh_car_action()
         self.reset_voting_buffer()
         
     # add on 11/27    
