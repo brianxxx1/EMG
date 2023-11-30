@@ -75,19 +75,20 @@ right_hand_emg = []
 
 async def main():
     # simple Mac Set up
-    my_device = "DC:54:75:C5:50:4D"
+    # my_device = "DC:54:75:C5:50:4D"
     # crowded space
     # my_device = "3C98A56C-C1C7-A508-5508-058C45A0528F"
-    # devices: list[BLEDevice] = await BleakScanner.discover()
-    # print(devices)
+    my_device = ""
+    devices: list[BLEDevice] = await BleakScanner.discover()
+    print(devices)
     
-    # for d in devices:
-    #     print(d)
-    #     # print(d.details)
-    #     if d.details["props"].get("Name") == "EMG":
-    #         my_device = d
-    #         print("Found it")
-    #         break
+    for d in devices:
+        print(d)
+        # print(d.details)
+        if d.details["props"].get("Name") == "EMG":
+            my_device = d
+            print("Found it")
+            break
 
     # method 1:
     def calculate_thresholds1(readings):
