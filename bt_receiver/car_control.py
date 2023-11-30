@@ -8,7 +8,7 @@ from datetime import datetime
 
 from enum import Enum
 import numpy as np
-import car
+# import car
 
 
 class MotorActions(Enum):
@@ -19,7 +19,7 @@ class MotorActions(Enum):
 
 
 class CarControllingAgent:
-    def __init__(self, voting_num=25, activate_threshold_left=0.5,activate_threshold_right=0.3):
+    def __init__(self, voting_num=5, activate_threshold_left=0.5,activate_threshold_right=0.3):
         self.data = []
 
         # number of votes for one round of voting
@@ -140,17 +140,17 @@ class CarControllingAgent:
         refresh car action based on the voting result, and send signal to control the car
         """
         if self.voting_result == MotorActions.FORWARD:
-            # print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            car.Motor_Forward()
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            # car.Motor_Forward()
         elif self.voting_result == MotorActions.TURNLEFT:
-            # print("<<<<<<<<<<<<<<-------------")
-            car.Motor_TurnLeft()
+            print("<<<<<<<<<<<<<<-------------")
+            # car.Motor_TurnLeft()
         elif self.voting_result == MotorActions.TURNRIGHT:
-            # print("--------------->>>>>>>>>>>>")
-            car.Motor_TurnRight()
+            print("--------------->>>>>>>>>>>>")
+            # car.Motor_TurnRight()
         else:
-            # print("stop")
-            car.Motor_Stop()
+            print("stop")
+            # car.Motor_Stop()
             
         # print(f"Voting result is {self.voting_result}")
 

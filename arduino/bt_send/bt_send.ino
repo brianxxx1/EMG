@@ -64,7 +64,7 @@ void loop() {
     while (central.connected()) {
       digitalWrite(ledPin, HIGH);   
       updateValue();
-      delay(40); // 40ms => 25 readings/sec => voting can have a odd number to break the tie
+      delay(5); // 40ms => 25 readings/sec => voting can have a odd number to break the tie
     }
 
     // when the central disconnects, print it out:

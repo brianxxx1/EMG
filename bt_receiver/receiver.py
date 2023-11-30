@@ -21,7 +21,7 @@ right_char_uuid = "19B10000-E8F2-537E-4F6C-D104768A1215"
 # So, 25 groups of readings per second are received in here.
 # TODO: We may need to tune the activate threshold to have a good muscle activation detection.
 global car_controlling_agent
-car_controlling_agent = CarControllingAgent(voting_num=5)
+car_controlling_agent = CarControllingAgent(voting_num=3)
 
 
 # plt.ion()  # Interactive mode on for dynamic plot updates
@@ -149,7 +149,7 @@ async def main():
         # car_thread = init_thread(car_controlling_agent)
 
         # signal_start.set()
-
+        print("finish Calibrating")
         while True:
     
             left_reading = await client.read_gatt_char(left_char_uuid)
