@@ -148,7 +148,6 @@ class CarControllingAgent:
         elif self.voting_result == MotorActions.TURNRIGHT:
             print("--------------->>>>>>>>>>>>")
             car.Motor_TurnRight()
-            
         else:
             print("stop")
             car.Motor_Stop()
