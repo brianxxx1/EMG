@@ -34,7 +34,7 @@ GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW)
 
 
 def Motor_Forward():
-    print("motor forward")
+    # print("motor forward")
     GPIO.output(ENA, True)
     GPIO.output(ENB, True)
     GPIO.output(IN1, True)  
@@ -44,7 +44,7 @@ def Motor_Forward():
 
 
 def Motor_Backward():
-    print("motor_backward")
+    # print("motor_backward")
     GPIO.output(ENA, True)
     GPIO.output(ENB, True)
     GPIO.output(IN1, False)
@@ -54,7 +54,7 @@ def Motor_Backward():
 
 
 def Motor_TurnRight():
-    print("motor_turnright")
+    # print("motor_turnright")
     GPIO.output(ENA, True)
     GPIO.output(ENB, True)
     GPIO.output(IN1, False)
@@ -63,7 +63,7 @@ def Motor_TurnRight():
     GPIO.output(IN4, False)
 
 def Motor_TurnLeft():
-    print("motor_turnleft")
+    # print("motor_turnleft")
     GPIO.output(ENA, True)
     GPIO.output(ENB, True)
     GPIO.output(IN1, True)
@@ -73,7 +73,7 @@ def Motor_TurnLeft():
 
 
 def Motor_Stop():
-    print("motor_stop")
+    # print("motor_stop")
     GPIO.output(ENA, False)
     GPIO.output(ENB, False)
     GPIO.output(IN1, False)
