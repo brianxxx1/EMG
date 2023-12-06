@@ -29,6 +29,7 @@ def update_strip():
 
 try:
     while True:
+        print("XXXXXXXXXXXX")
         update_strip()
         time.sleep(1)
 
