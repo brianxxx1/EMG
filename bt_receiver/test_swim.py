@@ -3,7 +3,7 @@ import neopixel
 
 # Configure the setup
 LED_COUNT = 21          # Number of LED pixels.
-LED_PIN = board.D18     # GPIO pin connected to the NeoPixels (must support PWM).
+LED_PIN = board.D12     # GPIO pin connected to the NeoPixels (must support PWM).
 ORDER = neopixel.GRB    # Pixel color channel order
 
 # Create the NeoPixel object
