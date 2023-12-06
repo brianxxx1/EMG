@@ -5,7 +5,7 @@ that decides and control the car action.
 # import threading
 # import time
 from datetime import datetime
-
+from statistics import median
 from enum import Enum
 import numpy as np
 import car
@@ -113,6 +113,7 @@ class CarControllingAgent:
         self.decide_action(left_count, right_count)
         # print(self.left_buffer)
         # print(self.right_buffer)
+       
         self.refresh_car_action()
         self.reset_voting_buffer()
         

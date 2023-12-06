@@ -34,16 +34,16 @@ def light_specific_leds(lower_half_index, upper_half_index):
 
     strip.show()
 
-try:
-    while True:
-        # Example indices - replace these with your own logic
-        lo = random.randint(0,9)
-        up = random.randint(11,20)
-        light_specific_leds(lo, up)
-        time.sleep(0.1)
+# try:
+#     while True:
+#         # Example indices - replace these with your own logic
+#         lo = random.randint(0,9)
+#         up = random.randint(11,20)
+#         light_specific_leds(lo, up)
+#         time.sleep(0.1)
 
-except KeyboardInterrupt:
-    # Turn off all LEDs when Ctrl+C is pressed
-    for i in range(LED_COUNT):
-        strip.setPixelColor(i, Color(0, 0, 0))
-    strip.show()
+# except KeyboardInterrupt:
+#     # Turn off all LEDs when Ctrl+C is pressed
+#     for i in range(LED_COUNT):
+#         strip.setPixelColor(i, Color(0, 0, 0))
+#     strip.show()

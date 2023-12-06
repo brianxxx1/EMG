@@ -12,6 +12,7 @@ from datetime import datetime
 import numpy as np
 # import matplotlib.pyplot as plt
 # from matplotlib.animation import FuncAnimation
+from test_swim import light_specific_leds
 
 # TODO: Add comments for below
 service = "19B10000-E8F2-537E-4F6C-D104768A1214"
@@ -73,6 +74,22 @@ right_hand_emg = []
 # voting result of voting_agent to stop, and call refresh_car_action to stop the car.
 
 
+def map_signal_to_led_index(signal, min_value, max_value, is_left):
+    # Map the signal value from the range (min_value, max_value) to the LED index range
+    if is_left:
+        # Map to lower half (0-9)
+        led_index = int(map_value(signal, min_value, max_value, 0, 9))
+    else:
+        # Map to upper half (11-20)
+        led_index = int(map_value(signal, min_value, max_value, 11, 20))
+    
+    return led_index
+
+def map_value(value, in_min, in_max, out_min, out_max):
+    # Map a value from one range to another
+    return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+
 async def main():
     # simple Mac Set up
     my_device = "DC:54:75:C5:50:4D"
@@ -113,9 +130,12 @@ async def main():
 
         # Calculate the mean of the filtered data
         mean_filtered = np.mean(filtered_data) if filtered_data else 0
+        
+        max_data = max(filtered_data)
+        min_data = min(filtered_data)
         # or mean of max and min?
         # mean_filtered = np.mean([max(filtered_data), min(filtered_data)]) if filtered_data else 0
-        return mean_filtered
+        return mean_filtered, max_data, min_data
 
     async with BleakClient(my_device) as client:
         
@@ -133,15 +153,16 @@ async def main():
             calibration_data_right.append(right_reading)
             
             
+            
         # Determine thresholds based on calibration data
         # use method1
         # left_threshold = calculate_thresholds1(calibration_data_left)
         # right_threshold = calculate_thresholds1(calibration_data_right)
         # use metho 2
-        left_threshold = calculate_thresholds2(calibration_data_left)
-        right_threshold = calculate_thresholds2(calibration_data_right)
+        left_threshold, left_max, left_min = calculate_thresholds2(calibration_data_left)
+        right_threshold, right_max, right_min = calculate_thresholds2(calibration_data_right)
 
-
+        
         car_controlling_agent.activate_threshold_left = left_threshold
         car_controlling_agent.activate_threshold_right = right_threshold
 
@@ -179,6 +200,12 @@ async def main():
             # ani = FuncAnimation(plt.gcf(), update, interval=100)
             # plt.tight_layout()
             # plt.show()
+            # light up LEDs according to left_reading and right_reading
+            
+            left_led_index = map_signal_to_led_index(left_reading, left_min, left_max, is_left=True)
+            right_led_index = map_signal_to_led_index(right_reading, right_min, right_max, is_left=False)
+            
+            light_specific_leds(left_led_index,right_led_index)
             car_controlling_agent.fill_readings(
                 left_reading=left_reading, right_reading=right_reading
             )
