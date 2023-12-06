@@ -6,7 +6,7 @@ LED_COUNT = 21         # Number of LED pixels.
 LED_PIN = 18           # GPIO pin connected to the pixels (18 uses PWM).
 # Other configuration variables as needed...
 
-strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS)
+strip = PixelStrip(LED_COUNT, LED_PIN, 800000, 5, True, 255)
 strip.begin()
 
 def light_up_led(index, color):
