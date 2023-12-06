@@ -4,10 +4,9 @@ import neopixel
 # Configuration
 LED_COUNT = 21          # Number of LED pixels
 LED_PIN = 32    # GPIO 12 used for the NeoPixels
-ORDER = neopixel.GRB    # Order of color channels, adjust if needed
 
 # Create NeoPixel object
-strip = neopixel.NeoPixel(LED_PIN, LED_COUNT, brightness=0.5, auto_write=False, pixel_order=ORDER)
+strip = neopixel.NeoPixel(LED_PIN, LED_COUNT, brightness=0.5, auto_write=False)
 
 def update_strip():
     # First 10 LEDs one color (e.g., Red)
