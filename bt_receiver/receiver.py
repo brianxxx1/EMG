@@ -144,7 +144,7 @@ async def main():
         calibration_data_right = []
         print("Initiate Calibrating")
         start_time = time.time()
-        while time.time() - start_time < 10:
+        while time.time() - start_time < 30:
             left_reading = await client.read_gatt_char(left_char_uuid)
             right_reading = await client.read_gatt_char(right_char_uuid)
             left_reading = int.from_bytes(left_reading, byteorder='big')
