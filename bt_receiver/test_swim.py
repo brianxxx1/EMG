@@ -42,6 +42,8 @@ try:
         lo = random.randint(0,9)
         up = random.randint(11,20)
         light_specific_leds(lo, up)
+        
+        time.sleep(0.5)
 
 
 except KeyboardInterrupt:
