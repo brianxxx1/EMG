@@ -12,7 +12,7 @@ from datetime import datetime
 import numpy as np
 # import matplotlib.pyplot as plt
 # from matplotlib.animation import FuncAnimation
-from test_swim import light_specific_leds
+# from test_swim import light_specific_leds
 
 # TODO: Add comments for below
 service = "19B10000-E8F2-537E-4F6C-D104768A1214"
