@@ -14,7 +14,7 @@ IN3 = 35  # Input 3
 IN4 = 37  # Input 4
 
 frequency = 30
-dc = 50
+dc = 100
 
 # Initialize motor A
 GPIO.setup(ENA, GPIO.OUT, initial=GPIO.LOW)
