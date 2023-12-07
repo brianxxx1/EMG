@@ -202,10 +202,10 @@ async def main():
             # plt.show()
             # light up LEDs according to left_reading and right_reading
             
-            # left_led_index = map_signal_to_led_index(left_reading, left_min, left_max, is_left=True)
-            # right_led_index = map_signal_to_led_index(right_reading, right_min, right_max, is_left=False)
+            left_led_index = map_signal_to_led_index(left_reading, left_min, left_max, is_left=True)
+            right_led_index = map_signal_to_led_index(right_reading, right_min, right_max, is_left=False)
             
-            # light_specific_leds(left_led_index,right_led_index)
+            light_specific_leds(left_led_index,right_led_index)
             car_controlling_agent.fill_readings(
                 left_reading=left_reading, right_reading=right_reading
             )
