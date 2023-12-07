@@ -35,7 +35,7 @@ GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW)
 
 def Motor_Forward():
     ENA_pwm.ChangeDutyCycle(dc_f)
-
+    ENB_pwm.ChangeDutyCycle(dc_f)
     # print("motor forward")
     GPIO.output(ENA, True)
     GPIO.output(ENB, True)
@@ -57,6 +57,7 @@ def Motor_Backward():
 
 def Motor_TurnRight():
     ENA_pwm.ChangeDutyCycle(dc)
+    ENB_pwm.ChangeDutyCycle(dc)
     # print("motor_turnright")
     GPIO.output(ENA, True)
     GPIO.output(ENB, True)
@@ -67,6 +68,7 @@ def Motor_TurnRight():
 
 def Motor_TurnLeft():
     ENA_pwm.ChangeDutyCycle(dc)
+    ENB_pwm.ChangeDutyCycle(dc)
     # print("motor_turnleft")
     GPIO.output(ENA, True)
     GPIO.output(ENB, True)
