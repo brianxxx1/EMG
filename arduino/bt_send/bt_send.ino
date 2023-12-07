@@ -1,9 +1,13 @@
 
 #include <ArduinoBLE.h>
+#include <Adafruit_NeoPixel.h>
 
 #define SERVICE_UUID  "19B10000-E8F2-537E-4F6C-D104768A1214"
 #define LEFT_CHARACTERISTIC_UUID "19B10000-E8F2-537E-4F6C-D104768A1214"
 #define RIGHT_CHARACTERISTIC_UUID "19B10000-E8F2-537E-4F6C-D104768A1215"
+
+#define LED_PIN    11
+#define LED_COUNT  21
 
 BLEService BLEservice(SERVICE_UUID);
 
@@ -11,6 +15,7 @@ BLEService BLEservice(SERVICE_UUID);
 BLEUnsignedCharCharacteristic left_characteristic(LEFT_CHARACTERISTIC_UUID, BLERead | BLEWrite);
 BLEUnsignedCharCharacteristic right_characteristic(RIGHT_CHARACTERISTIC_UUID, BLERead | BLEWrite);
 
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 int initLeftValue = 0;
 int initRightValue = 0;
@@ -20,7 +25,8 @@ const int ledPin = LED_BUILTIN;
 void setup() {
   Serial.begin(9600);
   while (!Serial);
-
+  strip.begin();
+  strip.show(); // Initialize all pixels to 'off'
   // set LED pin to output mode
   pinMode(ledPin, OUTPUT);
 
@@ -86,6 +92,10 @@ void updateValue() {
   left_characteristic.writeValue(left_emg_val);
   right_characteristic.writeValue(right_emg_val);
 
+  int lowerHalfIndex = mapSignalToLedIndex(left_emg_val, 0, 1023, true);
+  int upperHalfIndex = mapSignalToLedIndex(right_emg_val, 0, 1023, false);
+  lightSpecificLeds(lowerHalfIndex, upperHalfIndex);
+  
   Serial.print(F("Left EMG value sent: "));
   Serial.println(left_emg_val);
 
@@ -95,3 +105,24 @@ void updateValue() {
 }
 
 
+void lightSpecificLeds(int lowerHalfIndex, int upperHalfIndex) {
+  for (int i = 0; i < LED_COUNT; i++) {
+    if (i == lowerHalfIndex)
+      strip.setPixelColor(i, strip.Color(255, 0, 0)); // Red
+    else if (i == 10)
+      strip.setPixelColor(i, strip.Color(255, 255, 255)); // White
+    else if (i == upperHalfIndex)
+      strip.setPixelColor(i, strip.Color(0, 255, 0)); // Green
+    else
+      strip.setPixelColor(i, strip.Color(0, 0, 0)); // Off
+  }
+  strip.show();
+}
+
+int mapSignalToLedIndex(int signal, int min_value, int max_value, bool is_left) {
+  return mapValue(signal, min_value, max_value, is_left ? 0 : 11, is_left ? 9 : 20);
+}
+
+long mapValue(long value, long in_min, long in_max, long out_min, long out_max) {
+  return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
