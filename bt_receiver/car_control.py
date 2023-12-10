@@ -56,48 +56,9 @@ class CarControllingAgent:
         self.voting_buffer_length += 1
 
     def vote(self):
-        # # not start a voting round due to insufficient number of votes
-        # if self.voting_buffer_length < self.voting_num:
-        #     return
-
-        # # count votes
-        # left_diff = self.left_max - self.left_min
-        # right_diff = self.right_max - self.right_min
-        # left_count, right_count = 0, 0
-        # for i in range(self.voting_num):
-        #     left_change_percent = (self.left_buffer[i] - self.left_min) /  (left_diff +1e-323 )
-        #     if left_change_percent >= self.activate_threshold:
-        #         left_count += 1
-        #     else:
-        #         left_count -= 1
-        #     right_change_percent = (self.right_buffer[i] - self.right_min) / (right_diff+1e-323 )
-        #     if right_change_percent >= self.activate_threshold:
-        #         right_count += 1
-        #     else:
-        #         right_count -= 1
-
-        # # decide voting result
-        # if left_count > 0 and right_count > 0:
-        #     self.voting_result = MotorActions.FORWARD
-        # elif left_count > 0 and right_count < 0:
-        #     self.voting_result = MotorActions.TURNLEFT
-        # elif left_count < 0 and right_count > 0:
-        #     self.voting_result = MotorActions.TURNRIGHT
-        # else:
-        #     self.voting_result = MotorActions.STOP
-
-        # # finish one round of voting, and reset voting buffer
-        # self.reset_voting_buffer()
-        
-        # add on 11/27
         if self.voting_buffer_length < self.voting_num:
             return
 
-        # normalized_left_buffer = self.normalize_data(self.left_buffer)
-        # normalized_right_buffer = self.normalize_data(self.right_buffer)
-
-        # print(normalized_left_buffer, datetime.now())
-        # print(normalized_right_buffer),datetime.now() 
         left_count, right_count = 0, 0
         for i in range(self.voting_num):
             if self.left_buffer[i] >= self.activate_threshold_left:
@@ -111,19 +72,12 @@ class CarControllingAgent:
                 right_count -= 1
 
         self.decide_action(left_count, right_count)
+        self.refresh_car_action()
         # print(self.left_buffer)
         # print(self.right_buffer)
-       
-        self.refresh_car_action()
+
         self.reset_voting_buffer()
-        
-    # add on 11/27    
-    def normalize_data(self, buffer):
-        buffer_array = np.array(buffer)
-        normalized_buffer = (buffer_array - np.min(buffer_array)) / (np.ptp(buffer_array) + 1e-323)
-        return normalized_buffer.tolist()
-    
-    # add on 11/27
+
     def decide_action(self, left_count, right_count):
         
         if left_count > 0 and right_count > 0:
