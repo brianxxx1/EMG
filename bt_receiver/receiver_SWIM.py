@@ -1,15 +1,16 @@
 import asyncio
 
-from bleak import BleakClient, BleakScanner, BLEDevice
-from car_control import CarControllingAgent
-
 # from receiver import car_controlling_agent
 # from receiver import signal_start
 # import daemon
 import threading
 import time
 from datetime import datetime
+
 import numpy as np
+from bleak import BleakClient, BleakScanner, BLEDevice
+from car_control import CarControllingAgent
+
 # import matplotlib.pyplot as plt
 # from matplotlib.animation import FuncAnimation
 # from test_swim import light_specific_leds
@@ -40,7 +41,7 @@ right_hand_emg = []
 #     plt.ylabel('EMG Value')
 #     plt.title('Real-time EMG Data')
 #     plt.legend()
-        
+
 # Create an Event object to control the thread's behavior
 
 # signal_start= threading.Event()
@@ -61,7 +62,7 @@ right_hand_emg = []
 #     thread.start()
 #     return thread
 
-    # Start the thread
+# Start the thread
 
 
 # TODO: We may want a new main which is not async and waiting for readings.
@@ -82,8 +83,9 @@ def map_signal_to_led_index(signal, min_value, max_value, is_left):
     else:
         # Map to upper half (11-20)
         led_index = int(map_value(signal, min_value, max_value, 11, 20))
-    
+
     return led_index
+
 
 def map_value(value, in_min, in_max, out_min, out_max):
     # Map a value from one range to another
@@ -93,13 +95,13 @@ def map_value(value, in_min, in_max, out_min, out_max):
 async def main():
     # simple Mac Set up
     my_device = "DC:54:75:C5:50:4D"
-    
+
     # crowded space
     # my_device = "3C98A56C-C1C7-A508-5508-058C45A0528F"
     # my_device = ""
     # devices: list[BLEDevice] = await BleakScanner.discover()
     # print(devices)
-    
+
     # for d in devices:
     #     print(d)
     #     # print(d.details)
@@ -116,11 +118,10 @@ async def main():
         max_reading = max(readings)
         min_reading = min(readings)
 
-        return (max_reading+min_reading) * threshold_percentage
-    
+        return (max_reading + min_reading) * threshold_percentage
+
     # method 2:
     def calculate_thresholds2(readings, lower_percentile=5, upper_percentile=95):
-        
         # Calculate the lower and upper bounds for filtering
         lower_bound = np.percentile(readings, lower_percentile)
         upper_bound = np.percentile(readings, upper_percentile)
@@ -130,7 +131,7 @@ async def main():
 
         # Calculate the mean of the filtered data
         mean_filtered = np.mean(filtered_data) if filtered_data else 0
-        
+
         max_data = max(filtered_data)
         min_data = min(filtered_data)
         # or mean of max and min?
@@ -138,7 +139,6 @@ async def main():
         return mean_filtered, max_data, min_data
 
     async with BleakClient(my_device) as client:
-        
         # Calibration phase - collect data for 5 seconds
         calibration_data_left = []
         calibration_data_right = []
@@ -147,42 +147,42 @@ async def main():
         while time.time() - start_time < 10:
             left_reading = await client.read_gatt_char(left_char_uuid)
             right_reading = await client.read_gatt_char(right_char_uuid)
-            left_reading = int.from_bytes(left_reading, byteorder='big')
-            right_reading = int.from_bytes(right_reading, byteorder='big')
+            left_reading = int.from_bytes(left_reading, byteorder="big")
+            right_reading = int.from_bytes(right_reading, byteorder="big")
             calibration_data_left.append(left_reading)
             calibration_data_right.append(right_reading)
-            
-            
-            
+
         # Determine thresholds based on calibration data
         # use method1
         # left_threshold = calculate_thresholds1(calibration_data_left)
         # right_threshold = calculate_thresholds1(calibration_data_right)
         # use metho 2
-        left_threshold, left_max, left_min = calculate_thresholds2(calibration_data_left)
-        right_threshold, right_max, right_min = calculate_thresholds2(calibration_data_right)
+        left_threshold, left_max, left_min = calculate_thresholds2(
+            calibration_data_left
+        )
+        right_threshold, right_max, right_min = calculate_thresholds2(
+            calibration_data_right
+        )
 
-        
         car_controlling_agent.activate_threshold_left = left_threshold
         car_controlling_agent.activate_threshold_right = right_threshold
 
         # print(calibration_data_left,"left" , "Threashold", left_threshold)
         # print(calibration_data_right,"right", "Threashold", right_threshold)
-        
+
         # car_thread = init_thread(car_controlling_agent)
 
         # signal_start.set()
         print("finish Calibrating")
         while True:
-    
             left_reading = await client.read_gatt_char(left_char_uuid)
-            left_reading = int.from_bytes(left_reading, byteorder='big')
+            left_reading = int.from_bytes(left_reading, byteorder="big")
             # print(f"Left Reading is {left_reading}.{datetime.now()}")
             right_reading = await client.read_gatt_char(right_char_uuid)
-            right_reading = int.from_bytes(right_reading, byteorder='big')
+            right_reading = int.from_bytes(right_reading, byteorder="big")
             # print(f"Right Reading is {right_reading}.{datetime.now()}")
             # voting and taking car action based on voting result
-            
+
             # if left_reading >= left_threshold:
             #     if right_reading >= right_threshold:
             #         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -193,7 +193,7 @@ async def main():
             #         print("--------------->>>>>>>>>>>>")
             #     else:
             #         print("Stop")
-                    
+
             # left_hand_emg.append(left_reading)
             # right_hand_emg.append(right_hand_emg)
             # times.append(datetime.now())
@@ -201,19 +201,21 @@ async def main():
             # plt.tight_layout()
             # plt.show()
             # light up LEDs according to left_reading and right_reading
-            
-            left_led_index = map_signal_to_led_index(left_reading, left_min, left_max, is_left=True)
-            right_led_index = map_signal_to_led_index(right_reading, right_min, right_max, is_left=False)
-            
+
+            left_led_index = map_signal_to_led_index(
+                left_reading, left_min, left_max, is_left=True
+            )
+            right_led_index = map_signal_to_led_index(
+                right_reading, right_min, right_max, is_left=False
+            )
+
             # light_specific_leds(left_led_index,right_led_index)
             car_controlling_agent.fill_readings(
                 left_reading=left_reading, right_reading=right_reading
             )
-            
+
             car_controlling_agent.vote()
-            
-            
-            
+
             # car_controlling_agent.refresh_car_action()
 
 

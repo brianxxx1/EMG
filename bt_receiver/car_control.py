@@ -5,10 +5,11 @@ that decides and control the car action.
 # import threading
 # import time
 from datetime import datetime
-from statistics import median
 from enum import Enum
-import numpy as np
+from statistics import median
+
 import car
+import numpy as np
 
 
 class MotorActions(Enum):
@@ -19,7 +20,9 @@ class MotorActions(Enum):
 
 
 class CarControllingAgent:
-    def __init__(self, voting_num=5, activate_threshold_left=0.5,activate_threshold_right=0.3):
+    def __init__(
+        self, voting_num=5, activate_threshold_left=0.5, activate_threshold_right=0.3
+    ):
         self.data = []
 
         # number of votes for one round of voting
@@ -44,8 +47,7 @@ class CarControllingAgent:
         self.right_buffer = []
 
     def fill_readings(self, left_reading, right_reading):
-        
-        self.data.append([left_reading,right_reading])              
+        self.data.append([left_reading, right_reading])
         self.left_max = max(left_reading, self.left_max)
         self.left_min = min(left_reading, self.left_min)
         self.right_max = max(right_reading, self.right_max)
@@ -79,7 +81,6 @@ class CarControllingAgent:
         self.reset_voting_buffer()
 
     def decide_action(self, left_count, right_count):
-        
         if left_count > 0 and right_count > 0:
             self.voting_result = MotorActions.FORWARD
         elif left_count > 0 and right_count < 0:
@@ -88,7 +89,6 @@ class CarControllingAgent:
             self.voting_result = MotorActions.TURNRIGHT
         else:
             self.voting_result = MotorActions.STOP
-
 
     def refresh_car_action(self):
         """
@@ -106,7 +106,7 @@ class CarControllingAgent:
         else:
             # print("stop")
             car.Motor_Stop()
-            
+
         # print(f"Voting result is {self.voting_result}")
 
     # def stop_car(self):
