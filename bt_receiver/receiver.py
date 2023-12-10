@@ -42,37 +42,24 @@ right_hand_emg = []
 #     plt.title('Real-time EMG Data')
 #     plt.legend()
 
-# Create an Event object to control the thread's behavior
 
-# signal_start= threading.Event()
+def calculate_thresholds_by_percentile(
+    readings, lower_percentile=5, upper_percentile=95
+):
+    # Calculate the lower and upper bounds for filtering
+    lower_bound = np.percentile(readings, lower_percentile)
+    upper_bound = np.percentile(readings, upper_percentile)
 
-# def do_something():
-#     global car_controlling_agent
-#     global signal_start
-#     while True:
-#         time.sleep(1)
-#         if signal_start.is_set():
-#             car_controlling_agent.refresh_car_action()
-#         # else:
-#         #     car_controlling_agent.stop_car()
+    # Filter out the outliers
+    filtered_data = [x for x in readings if lower_bound <= x <= upper_bound]
 
-# def init_thread(car_controlling_agent):
-#     thread = threading.Thread(target=do_something)
-#     thread.daemon = True  # Optional: Set it as a daemon thread if you want it to automatically close with the main program
-#     thread.start()
-#     return thread
+    # Calculate the mean of the filtered data
+    mean_filtered = np.mean(filtered_data) if filtered_data else 0
 
-# Start the thread
+    max_data = max(filtered_data)
+    min_data = min(filtered_data)
 
-
-# TODO: We may want a new main which is not async and waiting for readings.
-# time.sleep(1)
-# If we are using this async main as our main control and we lose the bluetooth connection,
-# the refresh car action will also wait for next reading. In other words, the car will not stop if
-# we lose the bluetooth connection.
-# Design a new main, call the receiver to get the readings and fill them into the voting_agent.
-# A stand along damon process to refresh car_action. If we lose bluetooth connection, we set
-# voting result of voting_agent to stop, and call refresh_car_action to stop the car.
+    return mean_filtered, max_data, min_data
 
 
 def map_signal_to_led_index(signal, min_value, max_value, is_left):
@@ -110,34 +97,6 @@ async def main():
     #         print("Found it")
     #         break
 
-    # method 1:
-    def calculate_thresholds1(readings):
-        # Calculate the threshold as a percentage of the maximum value
-        # Adjust the percentage as needed
-        threshold_percentage = 0.5
-        max_reading = max(readings)
-        min_reading = min(readings)
-
-        return (max_reading + min_reading) * threshold_percentage
-
-    # method 2:
-    def calculate_thresholds2(readings, lower_percentile=5, upper_percentile=95):
-        # Calculate the lower and upper bounds for filtering
-        lower_bound = np.percentile(readings, lower_percentile)
-        upper_bound = np.percentile(readings, upper_percentile)
-
-        # Filter out the outliers
-        filtered_data = [x for x in readings if lower_bound <= x <= upper_bound]
-
-        # Calculate the mean of the filtered data
-        mean_filtered = np.mean(filtered_data) if filtered_data else 0
-
-        max_data = max(filtered_data)
-        min_data = min(filtered_data)
-        # or mean of max and min?
-        # mean_filtered = np.mean([max(filtered_data), min(filtered_data)]) if filtered_data else 0
-        return mean_filtered, max_data, min_data
-
     async with BleakClient(my_device) as client:
         # Calibration phase - collect data for 5 seconds
         calibration_data_left = []
@@ -157,10 +116,10 @@ async def main():
         # left_threshold = calculate_thresholds1(calibration_data_left)
         # right_threshold = calculate_thresholds1(calibration_data_right)
         # use metho 2
-        left_threshold, left_max, left_min = calculate_thresholds2(
+        left_threshold, left_max, left_min = calculate_thresholds_by_percentile(
             calibration_data_left
         )
-        right_threshold, right_max, right_min = calculate_thresholds2(
+        right_threshold, right_max, right_min = calculate_thresholds_by_percentile(
             calibration_data_right
         )
 
@@ -211,8 +170,6 @@ async def main():
             )
 
             car_controlling_agent.vote()
-
-            # car_controlling_agent.refresh_car_action()
 
 
 asyncio.run(main())
