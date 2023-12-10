@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 "rpi.gpio" = "*"
 bleak = "*"
+numpy = "*"
+rpi_ws281x = "*"
 
 
 [dev-packages]
