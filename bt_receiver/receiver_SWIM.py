@@ -132,10 +132,10 @@ async def main():
         while True:
             left_reading = await client.read_gatt_char(left_char_uuid)
             left_reading = int.from_bytes(left_reading, byteorder="big")
-            # print(f"Left Reading is {left_reading}.{datetime.now()}")
+            print(f"Left Reading is {left_reading}.{datetime.now()}")
             right_reading = await client.read_gatt_char(right_char_uuid)
             right_reading = int.from_bytes(right_reading, byteorder="big")
-            # print(f"Right Reading is {right_reading}.{datetime.now()}")
+            print(f"Right Reading is {right_reading}.{datetime.now()}")
             # voting and taking car action based on voting result
 
             # if left_reading >= left_threshold:
