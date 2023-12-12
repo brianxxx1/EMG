@@ -82,16 +82,16 @@ async def main():
     # crowded space
     # my_device = "3C98A56C-C1C7-A508-5508-058C45A0528F"
     # my_device = ""
-    # devices: list[BLEDevice] = await BleakScanner.discover()
-    # print(devices)
+    devices: list[BLEDevice] = await BleakScanner.discover()
+    print(devices)
 
-    # for d in devices:
-    #     print(d)
-    #     # print(d.details)
-    #     if d.details["props"].get("Name") == "EMG":
-    #         my_device = d
-    #         print("Found it")
-    #         break
+    for d in devices:
+        print(d)
+        # print(d.details)
+        if d.details["props"].get("Name") == "EMG":
+            my_device = d
+            print("Found it")
+            break
 
     async with BleakClient(my_device) as client:
         # Calibration phase - collect data for 5 seconds
