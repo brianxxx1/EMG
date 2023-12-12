@@ -2,16 +2,17 @@ import time
 
 import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
+# GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
 
-ENA = 13  # L298 Enable A
-ENB = 15  # L298 Enable B
-IN1 = 31  # Input 1
-IN2 = 33  # Input 2
-IN3 = 35  # Input 3
-IN4 = 37  # Input 4
+ENA = 27  # 13  # L298 Enable A
+ENB = 22  # 15  # L298 Enable B
+IN1 = 6  # 31  # Input 1
+IN2 = 13  # 33  # Input 2
+IN3 = 19  # 35  # Input 3
+IN4 = 26  # 37  # Input 4
 
 PWM_FREQUENCY = 30
 FORWARD_DC = 100
