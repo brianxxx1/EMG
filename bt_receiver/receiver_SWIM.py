@@ -121,6 +121,9 @@ async def main():
 
         car_controlling_agent.activate_threshold_left = left_threshold
         car_controlling_agent.activate_threshold_right = right_threshold
+        
+        car_controlling_agent.left_range =left_max - left_threshold
+        car_controlling_agent.right_range = right_max - right_threshold
 
         # print(calibration_data_left,"left" , "Threashold", left_threshold)
         # print(calibration_data_right,"right", "Threashold", right_threshold)
