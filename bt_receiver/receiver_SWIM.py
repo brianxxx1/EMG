@@ -108,10 +108,6 @@ async def main():
             calibration_data_right.append(right_reading)
 
         # Determine thresholds based on calibration data
-        # use method1
-        # left_threshold = calculate_thresholds1(calibration_data_left)
-        # right_threshold = calculate_thresholds1(calibration_data_right)
-        # use metho 2
         left_threshold, left_max, left_min = calculate_thresholds_by_percentile(
             calibration_data_left
         )
@@ -125,10 +121,8 @@ async def main():
         car_controlling_agent.left_range =left_max - left_threshold
         car_controlling_agent.right_range = right_max - right_threshold
 
-        # print(calibration_data_left,"left" , "Threashold", left_threshold)
-        # print(calibration_data_right,"right", "Threashold", right_threshold)
-
-        # car_thread = init_thread(car_controlling_agent)
+        print(calibration_data_left,"left" , "Threashold", left_threshold)
+        print(calibration_data_right,"right", "Threashold", right_threshold)
 
         # signal_start.set()
         print("finish Calibrating")
