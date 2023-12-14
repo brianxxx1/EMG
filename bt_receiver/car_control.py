@@ -82,8 +82,9 @@ class CarControllingAgent:
             else:
                 right_count -= 1
 
-        self.decide_action(left_count, right_count)
-        if l_c!=0 and r_c != 0:
+        direction = self.decide_action(left_count, right_count)
+        
+        if direction == "FORWARD":
             left_diff_mean = left_diff/l_c
             right_diff_mean = right_diff/r_c
             
@@ -107,12 +108,16 @@ class CarControllingAgent:
     def decide_action(self, left_count, right_count):
         if left_count > 0 and right_count > 0:
             self.voting_result = MotorActions.FORWARD
+            return "FORWARD"
         elif left_count > 0 and right_count < 0:
             self.voting_result = MotorActions.TURNLEFT
+            return "TURNLEFT"
         elif left_count < 0 and right_count > 0:
             self.voting_result = MotorActions.TURNRIGHT
+            return "TURNRIGHT"
         else:
             self.voting_result = MotorActions.STOP
+            return "STOP"
 
     def refresh_car_action(self, forward_ratio=0):
         """
