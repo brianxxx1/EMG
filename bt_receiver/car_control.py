@@ -92,6 +92,8 @@ class CarControllingAgent:
         
          
             forward_ratio = (left_ratio + right_ratio) / 2
+            if forward_ratio >= 1:
+                forward_ratio = 1
             self.refresh_car_action(forward_ratio)
             
         else:
