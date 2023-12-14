@@ -118,7 +118,7 @@ class CarControllingAgent:
         """
         if self.voting_result == MotorActions.FORWARD:
             # print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            car.Motor_Forward(forward_ratio*100)
+            car.Motor_Forward(forward_ratio)
         elif self.voting_result == MotorActions.TURNLEFT:
             # print("<<<<<<<<<<<<<<-------------")
             car.Motor_TurnLeft()

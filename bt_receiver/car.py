@@ -36,8 +36,8 @@ GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW)
 
 def Motor_Forward(forward_ratio):
     
-    ENA_pwm.ChangeDutyCycle(forward_ratio)
-    ENB_pwm.ChangeDutyCycle(forward_ratio)
+    ENA_pwm.ChangeDutyCycle(50 + forward_ratio*50)
+    ENB_pwm.ChangeDutyCycle(50 + forward_ratio*50)
     # print("motor forward")
     GPIO.output(ENA, True)
     GPIO.output(ENB, True)
