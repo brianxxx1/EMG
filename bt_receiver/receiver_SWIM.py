@@ -114,6 +114,7 @@ async def main():
             calibration_data_right
         )
 
+        # set threshold and activation range attributes for car_controlling_agent
         car_controlling_agent.activate_threshold_left = left_threshold
         car_controlling_agent.activate_threshold_right = right_threshold
 

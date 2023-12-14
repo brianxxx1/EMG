@@ -45,7 +45,7 @@ class CarControllingAgent:
         # Muscle with EMG Reading beyond this threshold are considered as active.
         self.activate_threshold_left = activate_threshold_left
         self.activate_threshold_right = activate_threshold_right
-
+        # activation range for car movements
         self.left_range = left_range
         self.right_range = right_rang
 
