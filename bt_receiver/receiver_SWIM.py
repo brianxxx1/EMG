@@ -82,10 +82,10 @@ async def main():
     # my_device = "3C98A56C-C1C7-A508-5508-058C45A0528F"
     # my_device = ""
     devices: list[BLEDevice] = await BleakScanner.discover()
-    print(devices)
+    # print(devices)
 
     for d in devices:
-        print(d)
+        # print(d)
         # print(d.details)
         if d.details["props"].get("Name") == "EMG":
             my_device = d

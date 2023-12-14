@@ -16,7 +16,7 @@ IN4 = 26  # 37  # Input 4
 
 PWM_FREQUENCY = 30
 FORWARD_DC = 100
-TURNING_DC = 50
+TURNING_DC = 60
 # Initialize motor A
 GPIO.setup(ENA, GPIO.OUT, initial=GPIO.LOW)
 ENA_pwm = GPIO.PWM(ENA, PWM_FREQUENCY)
