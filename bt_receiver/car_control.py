@@ -21,7 +21,12 @@ class MotorActions(Enum):
 
 class CarControllingAgent:
     def __init__(
-        self, voting_num=5, activate_threshold_left=0.5, activate_threshold_right=0.3, left_range=255, right_rang=255
+        self,
+        voting_num=5,
+        activate_threshold_left=0.5,
+        activate_threshold_right=0.3,
+        left_range=255,
+        right_rang=255,
     ):
         self.data = []
 
@@ -40,7 +45,7 @@ class CarControllingAgent:
         # Muscle with EMG Reading beyond this threshold are considered as active.
         self.activate_threshold_left = activate_threshold_left
         self.activate_threshold_right = activate_threshold_right
-        
+
         self.left_range = left_range
         self.right_range = right_rang
 
@@ -65,41 +70,40 @@ class CarControllingAgent:
             return
 
         left_count, right_count = 0, 0
-        left_diff, right_diff = 0,0
+        left_diff, right_diff = 0, 0
         l_c, r_c = 0, 0
         for i in range(self.voting_num):
             if self.left_buffer[i] >= self.activate_threshold_left:
                 left_count += 1
-                left_diff += self.left_buffer[i] -self.activate_threshold_left
-                l_c+=1
+                left_diff += self.left_buffer[i] - self.activate_threshold_left
+                l_c += 1
             else:
                 left_count -= 1
-                
+
             if self.right_buffer[i] >= self.activate_threshold_right:
                 right_count += 1
-                right_diff += self.right_buffer[i] -self.activate_threshold_right
-                r_c+=1
+                right_diff += self.right_buffer[i] - self.activate_threshold_right
+                r_c += 1
             else:
                 right_count -= 1
 
         direction = self.decide_action(left_count, right_count)
-        
+
         if direction == "FORWARD":
-            left_diff_mean = left_diff/l_c
-            right_diff_mean = right_diff/r_c
-            
-            left_ratio = left_diff_mean/self.left_range
-            right_ratio = right_diff_mean/self.right_range
-        
-         
+            left_diff_mean = left_diff / l_c
+            right_diff_mean = right_diff / r_c
+
+            left_ratio = left_diff_mean / self.left_range
+            right_ratio = right_diff_mean / self.right_range
+
             forward_ratio = (left_ratio + right_ratio) / 2
             if forward_ratio >= 1:
                 forward_ratio = 1
             self.refresh_car_action(forward_ratio)
-            
+
         else:
             self.refresh_car_action()
-        
+
         # print(self.left_buffer)
         # print(self.right_buffer)
 

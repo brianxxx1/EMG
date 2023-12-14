@@ -15,9 +15,8 @@ from swim_control import light_specific_leds
 service = "19B10000-E8F2-537E-4F6C-D104768A1214"
 left_char_uuid = "19B10000-E8F2-537E-4F6C-D104768A1214"
 right_char_uuid = "19B10000-E8F2-537E-4F6C-D104768A1215"
-# Arduino is sending the EMG readings every 40 ms.
-# So, 25 groups of readings per second are received in here.
-# TODO: We may need to tune the activate threshold to have a good muscle activation detection.
+# Arduino is sending the EMG readings every 1 ms.
+
 global car_controlling_agent
 car_controlling_agent = CarControllingAgent(voting_num=3)
 
@@ -117,12 +116,12 @@ async def main():
 
         car_controlling_agent.activate_threshold_left = left_threshold
         car_controlling_agent.activate_threshold_right = right_threshold
-        
-        car_controlling_agent.left_range =left_max - left_threshold
+
+        car_controlling_agent.left_range = left_max - left_threshold
         car_controlling_agent.right_range = right_max - right_threshold
 
-        print(calibration_data_left,"left" , "Threashold", left_threshold)
-        print(calibration_data_right,"right", "Threashold", right_threshold)
+        print(calibration_data_left, "left", "Threashold", left_threshold)
+        print(calibration_data_right, "right", "Threashold", right_threshold)
 
         # signal_start.set()
         print("finish Calibrating")
