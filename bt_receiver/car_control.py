@@ -83,17 +83,20 @@ class CarControllingAgent:
                 right_count -= 1
 
         self.decide_action(left_count, right_count)
-        
-        left_diff_mean = left_diff/l_c
-        right_diff_mean = right_diff/r_c
-        
-        left_ratio = left_diff_mean/self.left_range
-        right_ratio = right_diff_mean/self.right_range
+        if l_c!=0:
+            left_diff_mean = left_diff/l_c
+            right_diff_mean = right_diff/r_c
+            
+            left_ratio = left_diff_mean/self.left_range
+            right_ratio = right_diff_mean/self.right_range
         
          
-        forward_ratio = (left_ratio + right_ratio) / 2
+            forward_ratio = (left_ratio + right_ratio) / 2
+            self.refresh_car_action(forward_ratio)
+            
+        else:
+            self.refresh_car_action()
         
-        self.refresh_car_action(forward_ratio)
         # print(self.left_buffer)
         # print(self.right_buffer)
 
@@ -109,7 +112,7 @@ class CarControllingAgent:
         else:
             self.voting_result = MotorActions.STOP
 
-    def refresh_car_action(self, forward_ratio):
+    def refresh_car_action(self, forward_ratio=0):
         """
         refresh car action based on the voting result, and send signal to control the car
         """
