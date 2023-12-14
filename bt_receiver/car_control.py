@@ -83,7 +83,7 @@ class CarControllingAgent:
                 right_count -= 1
 
         self.decide_action(left_count, right_count)
-        if l_c!=0:
+        if l_c!=0 and r_c != 0:
             left_diff_mean = left_diff/l_c
             right_diff_mean = right_diff/r_c
             
@@ -118,7 +118,7 @@ class CarControllingAgent:
         """
         if self.voting_result == MotorActions.FORWARD:
             # print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            car.Motor_Forward(forward_ratio)
+            car.Motor_Forward(forward_ratio*100)
         elif self.voting_result == MotorActions.TURNLEFT:
             # print("<<<<<<<<<<<<<<-------------")
             car.Motor_TurnLeft()
